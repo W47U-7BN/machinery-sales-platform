@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('icon', '🔒')
+@section('code', '401')
+@section('title', 'Unauthorized Access')
+@section('message', 'Sorry, you do not have permission to view this page. Please log in with the appropriate credentials.')

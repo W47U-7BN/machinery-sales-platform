@@ -1,0 +1,399 @@
+/*
+ * ============================================
+ * SAAS LOADING SYSTEM v2.0
+ * Premium Loading Experience
+ * ============================================
+ */
+
+/* ============================================
+   GLOBAL PRELOADER
+   ============================================ */
+#saas-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--ds-surface, #ffffff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+[data-theme="dark"] #saas-preloader {
+  background: #0f172a;
+}
+
+#saas-preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Preloader Logo Animation */
+.saas-preloader-logo {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.saas-preloader-logo .logo-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  animation: saas-preloader-logo-pulse 2s ease-in-out infinite;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+}
+
+@keyframes saas-preloader-logo-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+  }
+}
+
+.saas-preloader-logo .logo-ring {
+  position: absolute;
+  inset: -8px;
+  border: 2px solid rgba(37, 99, 235, 0.15);
+  border-radius: 24px;
+  animation: saas-preloader-ring 2s ease-in-out infinite;
+}
+
+@keyframes saas-preloader-ring {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    border-color: rgba(37, 99, 235, 0.15);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.05);
+    border-color: rgba(37, 99, 235, 0.3);
+  }
+}
+
+/* Animated Bars */
+.saas-preloader-bars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.saas-preloader-bars .bar {
+  width: 3px;
+  height: 16px;
+  background: var(--ds-primary, #2563eb);
+  border-radius: 2px;
+  animation: saas-preloader-bar 1.2s ease-in-out infinite;
+}
+
+.saas-preloader-bars .bar:nth-child(1) { animation-delay: 0s; }
+.saas-preloader-bars .bar:nth-child(2) { animation-delay: 0.1s; height: 20px; }
+.saas-preloader-bars .bar:nth-child(3) { animation-delay: 0.2s; height: 24px; }
+.saas-preloader-bars .bar:nth-child(4) { animation-delay: 0.3s; height: 28px; }
+.saas-preloader-bars .bar:nth-child(5) { animation-delay: 0.4s; height: 24px; }
+.saas-preloader-bars .bar:nth-child(6) { animation-delay: 0.5s; height: 20px; }
+.saas-preloader-bars .bar:nth-child(7) { animation-delay: 0.6s; }
+.saas-preloader-bars .bar:nth-child(8) { animation-delay: 0.7s; }
+
+@keyframes saas-preloader-bar {
+  0%, 100% {
+    transform: scaleY(0.5);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
+}
+
+/* Preloader Text */
+.saas-preloader-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ds-text-tertiary, #94a3b8);
+  letter-spacing: 0.02em;
+  margin-bottom: 16px;
+}
+
+.saas-preloader-text .dot-animation::after {
+  content: '';
+  animation: saas-preloader-dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes saas-preloader-dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+  100% { content: ''; }
+}
+
+/* Progress Bar */
+.saas-preloader-progress {
+  width: 200px;
+  height: 3px;
+  background: var(--ds-surface-tertiary, #f1f5f9);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.saas-preloader-progress .progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  border-radius: 2px;
+  animation: saas-preloader-progress 2.5s ease-in-out infinite;
+}
+
+@keyframes saas-preloader-progress {
+  0% { width: 0%; margin-left: 0; }
+  50% { width: 70%; margin-left: 0; }
+  100% { width: 0%; margin-left: 100%; }
+}
+
+/* ============================================
+   PAGE TRANSITIONS
+   ============================================ */
+.saas-page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  background: var(--ds-surface, #ffffff);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+[data-theme="dark"] .saas-page-transition {
+  background: #0f172a;
+}
+
+.saas-page-transition.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Content fade-in on load */
+.saas-content {
+  animation: saas-content-fade-in 0.4s ease;
+}
+
+@keyframes saas-content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SKELETON LOADING PATTERNS
+   ============================================ */
+
+/* Dashboard skeleton */
+.saas-skeleton-dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.saas-skeleton-dashboard .sk-stat {
+  height: 120px;
+  border-radius: var(--ds-radius-xl, 16px);
+  background: linear-gradient(
+    90deg,
+    var(--ds-surface-tertiary, #f1f5f9) 25%,
+    var(--ds-surface-hover, #e2e8f0) 50%,
+    var(--ds-surface-tertiary, #f1f5f9) 75%
+  );
+  background-size: 200% 100%;
+  animation: saas-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.saas-skeleton-dashboard .sk-stat:nth-child(1) { grid-column: span 1; }
+.saas-skeleton-dashboard .sk-stat:nth-child(2) { grid-column: span 1; }
+.saas-skeleton-dashboard .sk-stat:nth-child(3) { grid-column: span 1; }
+.saas-skeleton-dashboard .sk-stat:nth-child(4) { grid-column: span 1; }
+
+/* Chart skeleton */
+.saas-skeleton-chart {
+  height: 300px;
+  border-radius: var(--ds-radius-xl, 16px);
+  background: linear-gradient(
+    90deg,
+    var(--ds-surface-tertiary, #f1f5f9) 25%,
+    var(--ds-surface-hover, #e2e8f0) 50%,
+    var(--ds-surface-tertiary, #f1f5f9) 75%
+  );
+  background-size: 200% 100%;
+  animation: saas-skeleton-shimmer 1.5s ease-in-out infinite;
+  margin-bottom: 24px;
+}
+
+/* Table skeleton */
+.saas-skeleton-table {
+  border-radius: var(--ds-radius-xl, 16px);
+  overflow: hidden;
+  background: var(--ds-surface, #ffffff);
+  border: 1px solid var(--ds-border, #e2e8f0);
+  padding: 16px;
+}
+
+.saas-skeleton-table .sk-header {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ds-border, #e2e8f0);
+  margin-bottom: 12px;
+}
+
+.saas-skeleton-table .sk-header .sk-th {
+  height: 12px;
+  flex: 1;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--ds-surface-tertiary) 25%, var(--ds-surface-hover) 50%, var(--ds-surface-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: saas-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.saas-skeleton-table .sk-row {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ds-border-light, #f1f5f9);
+}
+
+.saas-skeleton-table .sk-row:last-child { border-bottom: none; }
+
+.saas-skeleton-table .sk-row .sk-td {
+  height: 14px;
+  flex: 1;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--ds-surface-tertiary) 25%, var(--ds-surface-hover) 50%, var(--ds-surface-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: saas-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.saas-skeleton-table .sk-row .sk-td:last-child { flex: 0.5; }
+
+/* Card skeleton */
+.saas-skeleton-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.saas-skeleton-card-item {
+  height: 200px;
+  border-radius: var(--ds-radius-xl, 16px);
+  background: linear-gradient(
+    90deg,
+    var(--ds-surface-tertiary, #f1f5f9) 25%,
+    var(--ds-surface-hover, #e2e8f0) 50%,
+    var(--ds-surface-tertiary, #f1f5f9) 75%
+  );
+  background-size: 200% 100%;
+  animation: saas-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes saas-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton hidden utility */
+.saas-skeleton-hidden {
+  display: none !important;
+}
+
+.skeleton-content {
+  display: none;
+}
+
+.skeleton-content.loaded {
+  display: block;
+}
+
+/* ============================================
+   BUTTON LOADING STATE
+   ============================================ */
+.saas-btn.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.saas-btn.loading .btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: saas-spin 0.6s linear infinite;
+}
+
+.saas-btn.loading .btn-text {
+  opacity: 0.7;
+}
+
+/* ============================================
+   FORM LOADING OVERLAY
+   ============================================ */
+.saas-form-loading {
+  position: relative;
+}
+
+.saas-form-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: inherit;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .saas-form-loading::after {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+/* ============================================
+   RESPONSIVE LOADING
+   ============================================ */
+@media (max-width: 991.98px) {
+  .saas-skeleton-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .saas-skeleton-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .saas-preloader-logo .logo-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+
+  .saas-preloader-progress {
+    width: 160px;
+  }
+}

@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('icon', '🚫')
+@section('code', '403')
+@section('title', 'Forbidden')
+@section('message', 'You do not have the required permissions to access this resource. Please contact your administrator if you believe this is a mistake.')

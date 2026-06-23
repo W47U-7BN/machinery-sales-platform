@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('icon', '🔧')
+@section('code', '503')
+@section('title', 'Under Maintenance')
+@section('message', 'We are currently performing scheduled maintenance to improve your experience. We should be back online shortly.')

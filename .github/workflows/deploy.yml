@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring, pdo_mysql, bcmath, gd, zip, intl, opcache
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install --optimize-autoloader --no-dev --no-interaction --no-progress
+
+      - name: Copy Environment
+        run: cp .env.example .env
+
+      - name: Generate Key
+        run: php artisan key:generate
+
+      - name: Run Tests
+        run: php artisan test --parallel
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: :memory:
+
+      - name: Build Assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to Server
+        run: |
+          echo "Deploying to production server..."
+          # Add your deployment script here
+          # Example using SSH:
+          # rsync -avz --delete --exclude='.env' --exclude='vendor' --exclude='node_modules' ./ user@server:/var/www
+          # ssh user@server "cd /var/www && composer install --optimize-autoloader --no-dev && php artisan migrate --force && php artisan optimize"
